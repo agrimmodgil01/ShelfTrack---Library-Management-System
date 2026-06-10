@@ -1,4 +1,4 @@
-# LibraTrack Library Management System
+# ShelfTrack Library Management System
 
  Browser-based library management system that demonstrates catalog management, member management, circulation workflows, overdue detection, fine calculation, search, filters, dashboard metrics, and persistent local state.
 
