@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShelfTrack</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand">
+        <span class="brand-mark">ST</span>
+        <div>
+          <strong>ShelfTrack</strong>
+          <span>Library OS</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard" aria-label="Dashboard">
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-view="catalog" aria-label="Catalog">
+          <span>Catalog</span>
+        </button>
+        <button class="nav-item" data-view="members" aria-label="Members">
+          <span>Registered Members</span>
+        </button>
+        <button class="nav-item" data-view="circulation" aria-label="Circulation">
+          <span>Circulation</span>
+        </button>
+      </nav>
+
+      <section class="sidebar-panel">
+        <span class="label">Portfolio Highlights</span>
+        <p>Local-first CRUD, lending rules, overdue fines, search, filters, and persistent state.</p>
+      </section>
+    </aside>
+
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">CRUD Web Application</span>
+          <h1>Library Management System</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="resetDataBtn" type="button">Reset</button>
+          <button class="primary-button" id="quickIssueBtn" type="button">Issue Book</button>
+        </div>
+      </header>
+
+      <section class="view active" id="dashboardView" aria-labelledby="dashboardTitle">
+        <div class="section-heading">
+          <div>
+            <h2 id="dashboardTitle">Dashboard</h2>
+            <p>Collection health, active loans, overdue risks, and member activity.</p>
+          </div>
+        </div>
+
+        <div class="metric-grid" id="metricGrid"></div>
+
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Due Soon & Overdue</h3>
+              <span class="status-pill warning" id="riskCount">0 at risk</span>
+            </div>
+            <div class="stack-list" id="dueList"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Popular Categories</h3>
+              <span class="status-pill">Live Mix</span>
+            </div>
+            <div class="category-bars" id="categoryBars"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="catalogView" aria-labelledby="catalogTitle">
+        <div class="section-heading">
+          <div>
+            <h2 id="catalogTitle">Catalog</h2>
+            <p>Manage books, availability, categories, shelves, and ISBN metadata.</p>
+          </div>
+          <button class="primary-button" id="addBookBtn" type="button">Add Book</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="catalogSearch" type="search" placeholder="Search title, author, ISBN, shelf..." />
+          <select id="categoryFilter" aria-label="Filter by category">
+            <option value="all">All categories</option>
+          </select>
+          <select id="availabilityFilter" aria-label="Filter by availability">
+            <option value="all">All availability</option>
+            <option value="available">Available</option>
+            <option value="checked-out">Checked out</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Book</th>
+                <th>Category</th>
+                <th>Shelf</th>
+                <th>Copies</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="catalogTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="view" id="membersView" aria-labelledby="membersTitle">
+        <div class="section-heading">
+          <div>
+            <h2 id="membersTitle">Registered Members</h2>
+            <p>Member records, contact details, loan limits, and fines.</p>
+          </div>
+          <button class="primary-button" id="addMemberBtn" type="button">Add Member</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="memberSearch" type="search" placeholder="Search members, email, phone..." />
+          <select id="memberTypeFilter" aria-label="Filter by member type">
+            <option value="all">All member types</option>
+            <option value="Student">Student</option>
+            <option value="Faculty">Faculty</option>
+            <option value="Public">Public</option>
+          </select>
+        </div>
+
+        <div class="member-grid" id="memberGrid"></div>
+      </section>
+
+      <section class="view" id="circulationView" aria-labelledby="circulationTitle">
+        <div class="section-heading">
+          <div>
+            <h2 id="circulationTitle">Circulation</h2>
+            <p>Issue books, return loans, and calculate overdue fines automatically.</p>
+          </div>
+          <button class="primary-button" id="issueBookBtn" type="button">Issue Book</button>
+        </div>
+
+        <div class="toolbar">
+          <input id="loanSearch" type="search" placeholder="Search borrower, book, due date..." />
+          <select id="loanStatusFilter" aria-label="Filter by loan status">
+            <option value="all">All loans</option>
+            <option value="active">Active</option>
+            <option value="overdue">Overdue</option>
+            <option value="returned">Returned</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Book</th>
+                <th>Borrower</th>
+                <th>Issued</th>
+                <th>Due</th>
+                <th>Fine</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="loanTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="recordDialog">
+      <form method="dialog" id="recordForm">
+        <div class="dialog-header">
+          <h3 id="dialogTitle">Add Record</h3>
+          <button class="icon-button" value="cancel" type="submit" formnovalidate aria-label="Close">x</button>
+        </div>
+        <div class="form-grid" id="dialogFields"></div>
+        <menu class="dialog-actions">
+          <button class="ghost-button" value="cancel" type="submit" formnovalidate>Cancel</button>
+          <button class="primary-button" id="saveDialogBtn" value="default" type="submit">Save</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
